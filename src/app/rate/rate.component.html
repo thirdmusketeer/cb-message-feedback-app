@@ -1,0 +1,58 @@
+<form
+  [formGroup]="keywordsFormGroup"
+  class="w-full flex items-center space-x-2"
+  (ngSubmit)="onSubmit()"
+>
+  <mat-form-field floatLabel="always" class="w-full" appearance="fill">
+    <mat-label>Keywords</mat-label>
+    <input
+      matInput
+      formControlName="keywords"
+      placeholder="Ex. スキンケア, クーポン (comma separated)"
+    />
+  </mat-form-field>
+  <button [disabled]="!keywordsFormGroup.valid" mat-icon-button type="submit">
+    <mat-icon>send</mat-icon>
+  </button>
+</form>
+
+<mat-list role="list">
+  <mat-list-item role="listitem">
+    <div class="flex items-center w-full justify-between font-bold">
+      <div class="w-5/6">OpenAI Suggestion</div>
+      <div class="w-1/6">Rate</div>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-spinner class="mx-auto my-2" *ngIf="loading" diameter="20"></mat-spinner>
+  <ng-container *ngIf="!loading">
+    <mat-list-item
+      role="listitem"
+      *ngFor="let _suggestion of suggestions; last as last"
+    >
+      <div class="text-wrap flex items-center w-full justify-between">
+        <div class="w-5/6">
+          {{ _suggestion.text }}
+        </div>
+        <div class="w-1/6 flex space-x-2 items-center">
+          <button
+            [disabled]="_suggestion.rated"
+            mat-icon-button
+            (click)="onRate(_suggestion, true)"
+          >
+            <mat-icon>recommend</mat-icon>
+          </button>
+          <button
+            [disabled]="_suggestion.rated"
+            mat-icon-button
+            class="rotate-180"
+            (click)="onRate(_suggestion, false)"
+          >
+            <mat-icon>recommend</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </mat-list-item>
+  </ng-container>
+</mat-list>

@@ -1,0 +1,36 @@
+<mat-list role="list">
+  <mat-list-item role="listitem">
+    <div class="flex items-center w-full justify-between font-bold">
+      <div class="w-2/6">Keywords</div>
+      <div class="w-3/6">Message</div>
+      <div class="w-1/6">Rating</div>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <mat-spinner class="mx-auto my-2" *ngIf="loading" diameter="20"></mat-spinner>
+  <ng-container *ngIf="!loading">
+    <mat-list-item
+      role="listitem"
+      *ngFor="let _message of messages; last as last"
+    >
+      <div class="text-wrap flex items-center w-full justify-between">
+        <div class="w-2/6">
+          {{ _message.keywords }}
+        </div>
+        <div class="w-3/6">
+          {{ _message.message }}
+        </div>
+        <div class="w-1/6 flex space-x-2 items-center">
+          <button
+            disabled
+            mat-icon-button
+            [ngClass]="{ 'rotate-180': !_message.rating }"
+          >
+            <mat-icon>recommend</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </mat-list-item>
+  </ng-container>
+</mat-list>
